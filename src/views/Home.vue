@@ -1,6 +1,24 @@
 <template>
   <main v-if="!loading">
+    <!-- Tile /Could be Global or for countries/ -->
     <DataTitle :text="title" :dataDate="dataDate" />
+
+    <!-- Data Boxes -->
+    <DataBoxes :stats="stats" />
+
+    <!-- Select Bar -->
+    <CountrySelect @get-country="getCountryData" :countries="countries" />
+
+    <!-- Buttom for return to Global data -->
+    <div class="flex h-auto justify-center items-center">
+      <button
+        @click="clearCountryData"
+        v-if="stats.Country"
+        class="bg-green-700 text-white rounded p-3 mt-10 mb-10 focus:outile-none hover:bg-green-600"
+      >
+        Clear Country
+      </button>
+    </div>
   </main>
 
   <main class="flex flex-col align-center justify-center text-center" v-else>
@@ -13,10 +31,15 @@
 
 <script>
 import DataTitle from "@/components/DataTitle";
+import DataBoxes from "@/components/DataBoxes";
+import CountrySelect from "@/components/CountrySelect";
+
 export default {
   name: "Home",
   components: {
     DataTitle,
+    DataBoxes,
+    CountrySelect,
   },
   data() {
     return {
@@ -34,7 +57,19 @@ export default {
       const data = await res.json();
       return data;
     },
+    getCountryData(country) {
+      this.stats = country;
+      this.title = country.Country;
+    },
+    async clearCountryData() {
+      this.loading = true;
+      const data = await this.fetchCovidData();
+      this.title = "Global";
+      this.stats = data.Global;
+      this.loading = false;
+    },
   },
+  /*-- Life cycle method --*/
   async created() {
     const data = await this.fetchCovidData();
     this.dataDate = data.Date;
