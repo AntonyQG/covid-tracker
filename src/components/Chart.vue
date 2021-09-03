@@ -88,7 +88,7 @@ export default {
     this.loaded = true;
     var ctx = document.getElementById("confirmedChart");
     var ctxDesths = document.getElementById("deathsChart");
-    /*-- New Chart --*/
+    /*-- Chart of New Cases --*/
     var myChart = new Chart(ctx, {
       type: "bar",
       data: {
@@ -98,10 +98,11 @@ export default {
             label: "New",
             data: [this.stats.NewConfirmed, this.stats.NewDeaths],
             fill: true,
-            borderColor: "rgb(75, 192, 192)",
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderColor: "rgb(54, 162, 235)",
             tension: 0.1,
             borderWidth: 1,
-            hoverBackgroundColor: "rgb(75, 192, 192)",
+            hoverBackgroundColor: "rgb(54, 192, 235)",
           },
         ],
       },
@@ -113,7 +114,7 @@ export default {
         },
       },
     });
-    /*-- Total Chart --*/
+    /*-- Chart of Deaths Cases --*/
     var myChartDeaths = new Chart(ctxDesths, {
       type: "bar",
       data: {
@@ -123,10 +124,11 @@ export default {
             label: "Total",
             data: [this.stats.TotalConfirmed, this.stats.TotalDeaths],
             fill: true,
-            borderColor: "rgb(75, 192, 192)",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgb(255, 99, 132)",
             tension: 0.1,
             borderWidth: 1,
-            hoverBackgroundColor: "rgb(75, 192, 192)",
+            hoverBackgroundColor: "rgb(230, 56, 56)",
           },
         ],
       },
