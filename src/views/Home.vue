@@ -19,6 +19,14 @@
         Clear Country
       </button>
     </div>
+
+    <!-- Chart -->
+    <Chart
+      v-if="loaded"
+      :chartdata="chartData"
+      :options="chartOptions"
+      :stats="stats"
+    />
   </main>
 
   <main class="flex flex-col align-center justify-center text-center" v-else>
@@ -30,9 +38,14 @@
 </template>
 
 <script>
+/*-- Import Components --*/
 import DataTitle from "@/components/DataTitle";
 import DataBoxes from "@/components/DataBoxes";
 import CountrySelect from "@/components/CountrySelect";
+import Chart from "../components/Chart";
+
+/*-- Import Dev Dependencies --*/
+import moment from "moment";
 
 export default {
   name: "Home",
@@ -40,15 +53,22 @@ export default {
     DataTitle,
     DataBoxes,
     CountrySelect,
+    Chart,
   },
   data() {
     return {
       loading: true,
+      loaded: false,
       title: "Global",
       dataDate: "",
       stats: {},
       countries: [],
       loadingImage: require("../assets/loading.gif"),
+      chartData: [],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     };
   },
   methods: {
@@ -69,13 +89,21 @@ export default {
       this.loading = false;
     },
   },
-  /*-- Life cycle method --*/
+  /*-- Life Cycle Methods --*/
   async created() {
     const data = await this.fetchCovidData();
     this.dataDate = data.Date;
     this.stats = data.Global;
     this.countries = data.Countries;
     this.loading = false;
+  },
+  async mounted() {
+    this.loaded = false;
+    try {
+      this.loaded = true;
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
 </script>
